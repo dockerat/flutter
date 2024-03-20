@@ -13,7 +13,6 @@ FROM ccr.ccs.tencentyun.com/storezhang/ubuntu:23.04.17 AS builder
 ARG FLUTTER_HOME
 COPY --from=flutter /sdks/flutter /docker/${FLUTTER_HOME}
 COPY --from=git /opt/bitnami/git/bin/git /docker/usr/local/bin/git
-COPY flutter /docker/usr/local/bin/flutter
 
 
 
@@ -50,7 +49,7 @@ RUN set -ex \
     && apt autoclean
 
 # 执行命令
-ENTRYPOINT /usr/local/bin/flutter
+ENTRYPOINT ${FLUTTER_HOME}/bin/flutter
 
 ARG FLUTTER_HOME
 
