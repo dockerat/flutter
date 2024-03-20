@@ -30,9 +30,9 @@ clone:
 
 
 environment:
-  NAME: nginx
+  NAME: flutter
   DOCKER_REGISTRY: ccr.ccs.tencentyun.com
-  DOCKER_REPOSITORY: storezhang/nginx
+  DOCKER_REPOSITORY: storezhang/flutter
   TAG: 0.0.$${DRONE_BUILD_NUMBER}
 
 
