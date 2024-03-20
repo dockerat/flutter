@@ -38,11 +38,6 @@ RUN set -ex \
     \
     \
     \
-    # 增加执行权限
-    && chmod +x /usr/local/bin/flutter \
-    \
-    \
-    \
     # 清理镜像，减少无用包
     && apt autoremove -y \
     && rm -rf /var/lib/apt/lists/* \
