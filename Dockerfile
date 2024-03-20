@@ -1,29 +1,66 @@
-FROM ccr.ccs.tencentyun.com/storezhang/alpine:3.19.1
+ARG FLUTTER_HOME=/opt/google/flutter
 
+
+FROM ghcr.io/cirruslabs/flutter:3.19.3 AS flutter
+
+RUN rm -rf /sdks/flutter/dev
+RUN rm -rf /sdks/flutter/examples
+
+FROM bitnami/git:2.44.0 AS git
+
+
+FROM ccr.ccs.tencentyun.com/storezhang/ubuntu:23.04.17 AS builder
+ARG FLUTTER_HOME
+COPY --from=flutter /sdks/flutter /docker/${FLUTTER_HOME}
+COPY --from=git /opt/bitnami/git/bin/git /docker/usr/local/bin/git
+COPY flutter /docker/usr/local/bin/flutter
+
+
+
+FROM ccr.ccs.tencentyun.com/storezhang/ubuntu:23.04.17
 
 LABEL author="storezhang<华寅>" \
-email="storezhang@gmail.com" \
-qq="160290688" \
-wechat="storezhang" \
-description="动态域名解析，支持阿里云、百度云、腾讯云、DNSPod等"
+    email="storezhang@gmail.com" \
+    qq="160290688" \
+    wechat="storezhang" \
+    description="Flutter基础镜像，各个平台的打包应该再此基础上派生镜像"
 
-
-# 复制文件
-COPY docker /
-
+COPY --from=builder /docker /
 
 RUN set -ex \
     \
     \
     \
-    && apk update \
+    && apt update -y \
+    # && apt upgrade -y \
     \
-    # 增加执行权限，防止出现因为无执行权限导致在Docker内部无法运行的问题
-    && chmod +x /etc/s6/ddns/* \
+    # 安装依赖库
+    && apt install -y unzip \
+    \
+    \
     \
     # 增加执行权限
-    && chmod +x /opt/storezhang/ddns \
+    && chmod +x /usr/local/bin/flutter \
     \
     \
     \
-    && rm -rf /var/cache/apk/*
+    # 清理镜像，减少无用包
+    && apt autoremove -y \
+    && rm -rf /var/lib/apt/lists/* \
+    && apt autoclean
+
+# 执行命令
+ENTRYPOINT /usr/local/bin/flutter
+
+ARG FLUTTER_HOME
+
+ENV FLUTTER_HOME ${FLUTTER_HOME}
+ENV PATH=${FLUTTER_HOME}/bin:$PATH
+
+ENV FLUTTER_STORAGE_BASE_URL https://storage.flutter-io.cn
+ENV PUB_HOSTED_URL https://pub.flutter-io.cn
+ENV FLUTTER_GIT_URL https://gitee.com/mirrors/Flutter.git
+
+# 配置依赖包缓存路径
+ENV FLUTTER_CACHE /var/lib/flutter
+ENV PUB_CACHE ${FLUTTER_CACHE}/pub
