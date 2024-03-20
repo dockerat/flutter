@@ -31,7 +31,7 @@ RUN set -ex \
     \
     \
     && apt update -y \
-    # && apt upgrade -y \
+    && apt upgrade -y \
     \
     # 安装依赖库
     && apt install -y unzip \
