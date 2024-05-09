@@ -9,14 +9,14 @@ RUN rm -rf /sdks/flutter/examples
 FROM bitnami/git:2.45.0 AS git
 
 
-FROM ccr.ccs.tencentyun.com/storezhang/ubuntu:23.04.17 AS builder
+FROM ccr.ccs.tencentyun.com/storezhang/ubuntu:24.04.24 AS builder
 ARG FLUTTER_HOME
 COPY --from=flutter /sdks/flutter /docker/${FLUTTER_HOME}
 COPY --from=git /opt/bitnami/git/bin/git /docker/usr/local/bin/git
 
 
 
-FROM ccr.ccs.tencentyun.com/storezhang/ubuntu:23.04.17
+FROM ccr.ccs.tencentyun.com/storezhang/ubuntu:24.04.24
 
 LABEL author="storezhang<华寅>" \
     email="storezhang@gmail.com" \
