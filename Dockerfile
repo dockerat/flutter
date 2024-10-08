@@ -6,7 +6,7 @@ FROM ghcr.io/cirruslabs/flutter:3.24.3 AS flutter
 RUN rm -rf /sdks/flutter/dev
 RUN rm -rf /sdks/flutter/examples
 
-FROM bitnami/git:2.46.2 AS git
+FROM bitnami/git:2.47.0 AS git
 
 
 FROM ccr.ccs.tencentyun.com/storezhang/ubuntu:24.04.24 AS builder
