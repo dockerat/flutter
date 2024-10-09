@@ -49,20 +49,15 @@ steps:
       - name: docker
         path: /var/lib/docker
     environment:
-      PASSWORD_DOCKER:
-        from_secret: token_docker
       PASSWORD_CCR:
-        from_secret: password_tencentyun_ccr
+        from_secret: password_ccr
     settings:
       repository: $${DOCKER_REPOSITORY}
       tag: $${TAG}
-      registries:
-        - username: storezhang
-          password: $${PASSWORD_DOCKER}
-        - hostname: ccr.ccs.tencentyun.com
-          username: "160290688"
-          password: $${PASSWORD_CCR}
-          required: true
+      registry:
+        hostname: ccr.ccs.tencentyun.com
+        username: "160290688"
+        password: $${PASSWORD_CCR}
 
   - name: 通知
     image: ccr.ccs.tencentyun.com/dronestock/feishu
