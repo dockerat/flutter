@@ -1,7 +1,7 @@
 ARG FLUTTER_HOME=/opt/google/flutter
 
 
-FROM ghcr.io/cirruslabs/flutter:3.38.1 AS flutter
+FROM ghcr.io/cirruslabs/flutter:3.38.2 AS flutter
 
 RUN rm -rf /sdks/flutter/dev
 RUN rm -rf /sdks/flutter/examples
